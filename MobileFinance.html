@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MobileFinances</title>
+    <style>
+        #newGoalButton{
+  padding: 0.5vh;
+  border: 1px solid red;
+  z-index: 3;
+  
+}
+
+input {
+  padding: 10px;
+  width: 80%;
+  margin-bottom: 15px;
+  background-color: #333333;
+  border: 1px solid #444444;
+  color: #ffffff;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.status {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #28a745;
+}
+
+.error {
+  color: #dc3545;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #1e1e1e;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.modal input {
+  margin-bottom: 10px;
+}
+
+.modal button {
+  background-color: #28a745;
+}
+
+.modal button:hover {
+  background-color: #218838;
+}
+
+/* Circle Styling */
+.circle-container {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+
+  
+
+}
+
+.circle-wrapper {
+  position: relative;
+  margin: 10px;
+
+}
+
+.circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.progress-circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  
+  transform: rotate(-90deg); /* Start from the top */
+}
+
+.progress-bar {
+  stroke-linecap: round;
+  stroke: #4CAF50;
+  stroke-width: 5;
+  fill: none;
+  transition: stroke-dashoffset 1s ease-out;
+}
+
+
+.item {
+  width: 100%;
+  height: 10vh;
+  background: #555252;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  margin: 10px auto;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  position: relative;
+ 
+}
+.item img {
+  width: 10vh;
+  height: 10vh;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.item .info {
+  margin-left: 20px;
+  text-align: left;
+}
+.acieving{
+  position: absolute;
+  top: 0;
+  left: 300px;
+}
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 5px;
+  background-color: #4caf50;
+  transition: width 0.5s ease-in-out;
+}
+.goalSpacificContainer{
+  display: none;
+  position: absolute;
+  left: 0;
+  width: 1400px;
+  background-color: #121212;
+  height: 400px;
+  overflow: auto;
+}
+table {
+    margin-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+.bankInput {
+    width: 150px;
+    padding: 5px;
+    margin: 5px;
+}
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
+}
+label {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.chosenGraph{
+    scale: 1.1;
+    box-shadow: 0px 0px 20px 5px rgba(0, 255, 255, 0.6); /* Glowing cyan shadow */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.glowing-box {
+    width: 200px;
+    height: 200px;
+    background-color: #3498db;
+    box-shadow: 0px 0px 20px 5px rgba(0, 255, 255, 0.6); /* Glowing cyan shadow */
+    margin: 50px;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .glowing-box:hover {
+    box-shadow: 0px 0px 30px 10px rgba(0, 255, 255, 0.9); /* Glow effect on hover */
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center; 
+            padding-top: 20vh;
+            background-color: #121212;
+            color: #ffffff;
+            
+        }
+        input{
+            display: block;
+            width: calc(100% - 16px);
+            margin: 10px 0;
+            padding: 8px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #ffffff;
+            border-radius: 5px;
+            
+          }
+
+          /* Remove the spinner buttons for number inputs */
+          input {
+            -moz-appearance: textfield; /* Firefox */
+            -webkit-appearance: none;   /* Chrome, Safari */
+            appearance: none;           /* For modern browsers */
+             }
+  
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none; /* Remove the spinner in WebKit browsers */
+                margin: 0;                /* Remove extra space */
+            }
+            
+            input[type="number"] {
+                -moz-appearance: textfield; /* Firefox */
+                appearance: textfield;      /* For other browsers */
+            }
+
+          button {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #333333;
+        }
+        #veryTop{
+            width: 100%;
+            height: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            position: absolute;
+            top: 0;
+            background-color: #121212;
+        }
+        header { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 20vh; 
+            color: white; 
+            display: flex; 
+            align-items: last baseline; 
+            gap: 10px;
+            background: #1e1e1e;
+            z-index: 2;
+           
+            
+        }
+          /* Main Popup Container */
+   .popup {
+    position: fixed;
+    display: none;
+    top: 10vh;
+    background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
+    border-radius: 12px;
+    padding: 10px 40px;
+    width: 420px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 3;
+}
+
+.popup h2 {
+    color: #fff;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+
+/* Button Group (List and Currencies) */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* List Button */
+.list-button {
+    background: #007bff;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.list-button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Currency Buttons */
+.currency-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 12px;
+}
+
+.currency-buttons button {
+    background: #4d4d4d;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.currency-buttons button.selected {
+    background: #007bff;
+    border: 2px solid #0056b3;
+}
+
+.currency-buttons button.disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+
+.currency-buttons button:hover:not(.disabled) {
+    background: #5c5c5c;
+    transform: scale(1.05);
+}
+
+/* Input Fields */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 4px 0;
+    border: 1px solid #444;
+    border-radius: 10px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+input::placeholder {
+    color: #bbb;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.action-buttons button {
+    padding: 12px 20px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-buttons button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* List Popup Styles */
+.list-popup {
+    background: linear-gradient(135deg, #333, #222);
+    border-radius: 12px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 30vh;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    display: none; /* Initially hidden */
+    z-index: 4;
+}
+
+.list-popup h3 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* Dynamically generated list of options */
+.list-popup .list-option {
+    background: #4d4d4d;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.list-popup .list-option:hover {
+    background: #007bff;
+    transform: scale(1.05);
+}
+
+.list-popup button {
+    background: #e53935;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.list-popup button:hover {
+    background: #d32f2f;
+}
+.titleContainer{
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#addSpacificsPopup{
+    top: 20vh;
+}
+.goalSpacificContainer{
+    z-index: 2;
+  }
+  .expencePieContainer{
+  
+  position: absolute;
+  height: 540px;
+  width: 800px;
+  left: 5px;
+  top: 2px;
+  z-index: 3;
+  display: none;
+  justify-content: space-around;
+  background-color: black;
+ 
+}
+
+
+.twoCharts{
+  display: flex;
+  justify-content: space-around;
+  
+ 
+}
+
+.chartsPieWraper{
+  width: 50vw;
+}
+
+.linearContainer{
+  position: absolute;
+  left: 5px;
+  height: 530px;
+  width:1000px;
+  top: 5px;
+  background-color: rgb(220, 205, 255);
+  display: none;
+  z-index: 2;
+  
+}
+.averageLinearChartContainer{
+  position: absolute;
+  left: 0;
+  width: 50vw;
+  top: 185vh;
+ 
+}
+.informationDiv{
+  position: absolute;
+  right: 0;
+  top: 185vh;
+  width: 750px;
+  height: 412px;
+ background-color: #1f1f1f;
+ padding: 20px;
+ border-radius: 8px;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+ overflow: auto;
+}
+#daysInput{
+    width: 100px;
+}
+.container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+    padding: 5px;
+    box-sizing: border-box;
+   
+    
+}
+#MainInformationContainer{
+    position: relative;
+    padding: 0;
+    width: 1500px;
+    height: 580px;
+    border: 1px solid green;
+    position: absolute;
+    left: 0;
+}
+#infomationBoard{
+    position: relative;
+    width: 100%;
+    height: 67%;
+   
+}
+.month {
+   
+    border: 1px solid #ccc;
+    padding: 3px;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    font-size: 0.6em;
+    
+}
+.month-name {
+    text-align: center;
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 1px;
+    height: 160px;
+    
+}
+.day {
+    text-align: center;
+    padding: 1px;
+    cursor: pointer;
+    background-color: #878585;
+    border: 1px solid #ddd;
+    font-size: 0.5em;
+    
+}
+.day:hover {
+    background-color: #f0f0f0;
+}
+.highlight {
+    background-color: rgb(0, 122, 128);
+    color: white;
+}
+.selected{
+    box-sizing: border-box;
+    border: 2px solid red;
+}
+.passed{
+    background-color: #ddd;
+}
+
+
+.totals{
+    background-color: rgb(65, 64, 64);
+    cursor: pointer;
+}
+
+#MainInformationContainer input{
+    background-color: transparent;
+    border: none;
+}
+#exchangeRates{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 5px;
+}
+#exchangeRates input{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-weight: 900;
+    font-size: 20px;
+    text-align: center;
+    color:  gold;
+}
+#bankAccounts input{
+   padding: 0;
+   margin: 0;
+   height: 100%;
+   text-align: center;
+   font-size: 20px;
+   font-weight: 900;
+   color: green;
+   
+}
+
+
+#bankAccounts{
+    position: absolute;
+    top: 13%;
+    right: 0;
+    width: 315px;
+   
+   
+}
+#totalResults{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 315px;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 20px;
+    color: rgb(190, 198, 75);
+   
+}
+.toBeDone{
+   background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaJvlK2FJtWrw-swlL5-qlLwFm8LLOtjMp-w&s);
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+}
+.ExchangeWraper{
+    position: relative;
+    width: 100px;
+    height: 50px;
+}
+#usd-eur{
+    background-image: url(https://www.metalelokacyjne.pl/pol_il_Banknot-100-Euro-100-EUR-UNC-10982.jpg);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+}
+#usd-pln{
+    background-image: url(https://www.metalmarket.eu/data/gfx/pictures/medium/9/8/11089_1.jpg);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+}
+#usdToEur{
+position: absolute;
+top: 0;
+}
+#usdToMdl{
+position: absolute;
+top: 0;
+}
+#usdToPln{
+position: absolute;
+top: 0;  
+}
+#usd-mdl{
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/MD_500_lei_av.jpg/1200px-MD_500_lei_av.jpg);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+}
+
+.balance-contaier{
+   width: 100%;
+   height: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+.balance-contaier:hover {
+    box-shadow: 0px 0px 30px 10px rgba(0, 255, 255, 0.9); /* Glow effect on hover */
+  }
+
+#usd-bank-curency{
+    background-image: url(https://us.123rf.com/450wm/eugenebsov/eugenebsov2311/eugenebsov231100045/217615166-gold-dollar-vconcept-of-web-internet-currency-dollar-medal.jpg?ver=6);
+    background-size: contain;
+    background-position: center;
+    height: 35px;
+    width: 35px;
+    margin-left: 6px;
+    cursor: pointer;
+   
+}
+#eur-bank-curency{
+    background-image: url(https://img.freepik.com/darmowe-wektory/pieniadze-europejskie-zlota-moneta-na-ciemnym-tle_1017-51835.jpg?semt=ais_hybrid);
+    background-size: contain;
+    background-position: center;
+    height: 50px;
+    width: 50px;
+    background-color: black;
+    cursor: pointer;
+   
+}
+#mdl-bank-curency{
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB-ITHzbp75ICHryxQ_m6BbLi_BjkCiJYdsJXK43VxxVCvwfpfLvyB7uJcUzHMqKmKmTg&usqp=CAU);
+    background-size: cover;
+    height: 32px;
+    width: 32px;
+    margin-left: 8px;
+    border-radius: 50%;
+    background-color: black;
+    cursor: pointer;
+   
+}
+#pln-bank-curency{
+    background-image: url(https://thumbs.dreamstime.com/b/gold-coin-zloty-concept-internet-web-currency-medal-297064252.jpg);
+    background-size: cover;
+    height: 40px;
+    width: 40px;
+    margin-left: 5px;
+    border-radius: 50%;
+    background-color: black;
+    cursor: pointer;
+   
+}
+.mobias{
+    background-image: url(https://play-lh.googleusercontent.com/bg-VhuZhJDnq8_RFolfEH1lDAUc0CYOggn61meBWTSx-dBdlG6EMbJnctc_vKwNd2PI);
+    background-size: cover;
+    background-position: center;
+    height: 50px;
+    width: 50px;
+    
+}
+.Victoria{
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZdj6bP-ocSyheaRuMRbt_h-2p2IMDzIdlPw&s);
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+.pko{
+    background-image: url(https://www.rudaslaskaplaza.pl/_cache/shops/510-255/fill/pko.png);
+    background-size: cover;
+    background-position: center;
+    height: 50px;
+    width: 50px;
+    
+}
+#actualMoney{
+    background-color: rgb(4, 70, 80);
+    color: rgb(0, 115, 128);
+    font-weight: 900;
+}
+#actualMoney:hover {
+    box-shadow: 0px 0px 30px 10px rgba(0, 255, 255, 0.9); /* Glow effect on hover */
+  }
+  #graphButtons{
+    position: absolute;
+    right: 315px;
+    width: 200px;
+    height: 385px;
+  }
+  #graphLast{
+    color: green;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  #GraphLastOperation{
+    color: white;
+    position: absolute;
+    top: 40px;
+    right: 10px;
+  
+  }
+  #graphLast2{
+    color:red;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+  #GraphLastOperation2{
+    color: white;
+    position: absolute;
+    bottom: 40px;
+    right: 10px;
+  
+  }
+  #dayList{
+    width: 800px;
+    height: 385px;
+    overflow: auto;
+  }
+  .dayContainer{
+    margin-top: 10px;
+    height: 45px;
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .weekDayContainer{
+    height: 45px;
+    width: 45px;
+    background-color: rgb(57, 101, 111);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    border-radius: 10px;
+ 
+  }
+  .dayDate{
+    height: 45px;
+    width: 45px;
+    background-color: rgb(25, 48, 53);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border-radius: 10px;
+  }
+ 
+  .usdCalc{
+    background-color: green;
+    border-radius: 5px;
+    height: 45px;
+    font-size: 13px;
+    padding: 0 10px;
+
+  }
+  .eurCalc{
+    background-color: rgb(128, 126, 0);
+    height: 45px;
+    font-size: 13px;
+    padding: 0 10px;
+    border-radius: 5px;
+  }
+  .plnCalc{
+    background-color: rgb(0, 128, 128);
+    height: 45px;
+    font-size: 13px;
+    padding: 0 10px;
+    border-radius: 5px;
+  }
+  .mdlCalc{
+    background-color: rgb(124, 128, 0);
+    height: 45px;
+    font-size: 13px;
+    padding: 0 10px;
+    border-radius: 5px;
+  }
+  #dayPopup{
+    z-index: 2;
+    display: none;
+    background-color: rgb(27, 94, 104);
+    position: absolute;
+    top: 20vh;
+    left: 1vw;
+    width: 1500px;
+    height: 580px;
+    /* transform: translate(-50%, -50%); */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    font-family: Arial, sans-serif;
+    flex-direction: column;
+   
+  }
+
+.popup-content {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 0.9em;
+    overflow-y: auto;
+}
+.popup-content div {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 1px solid #444;
+}
+
+.popup-content div:last-child {
+  border-bottom: none;
+}
+
+.popup-content span {
+  font-weight: 600;
+}
+
+.expense-section {
+  grid-column: span 2;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #444;
+}
+
+.expense-section h3 {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.expenses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  max-height: 50px;
+  overflow: auto;
+}
+
+.expenses div {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.popup-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.popup-close {
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.popup-close:hover {
+  background-color: #ff2a2a;
+}
+ #dataInput{
+  width: 50px;
+ }
+
+      
+    </style>
+
+</head>
+<body>
+    <div class="popup" id="dayPopup">
+        <div class="popup-content">
+            <div><span>Date:</span><span id="date"></span></div>
+            <div><span>Weekday:</span><span id="weekday"></span></div>
+            <div><span>Count Number:</span><span id="countNumber"></span></div>
+            <div><span>Work Hours:</span><span id="workHours"></span></div>
+            <div><span>Rate Per Hour:</span><span id="ratePerHour"></span></div>
+            
+            <div><span>Total Income:</span><span id="totalIncome"></span></div>
+            <div><span>Total Outcome:</span><span id="totalOutcome"></span></div>
+      
+            <div><span>All-Time Income:</span><span id="allTimeIncome"></span></div>
+            <div><span>All-Time Outcome:</span><span id="allTimeOutcome"></span></div>
+      
+            <div><span>Balance in USD:</span><span id="balanceInUSD"></span></div>
+            <div><span>Actual Finance Statement:</span><span id="actualFinanceStatement"></span></div>
+      
+            <div><span>Freedom:</span><span id="freedom"></span></div>
+        </div>
+      
+        <!-- Expense Section -->
+        <div class="expense-section">
+            <div class="expenses" id="expenses">
+                <!-- Expenses will be populated here -->
+            </div>
+        </div>
+      
+        <div class="popup-footer">
+            <button class="popup-close" onclick="We.closePopup('dayPopup')">Close</button>
+        </div>
+      </div>
+      <!--_______________________________________________________________________________-->
+      <!--___________________________________    LIST    ________________________________-->
+      <!--_______________________________________________________________________________-->
+      <!-- List Popup -->
+      <div class="list-popup" id="list-popup">
+        <h3>Select a Category</h3>
+        <!-- List options will be dynamically generated here -->
+        <div id="list-options"></div>
+        <button id="list-cancel-btn" onclick="We.closePopup('list-popup')">Cancel</button>
+        </div>
+      <!--_______________________________________________________________________________-->
+      <!--________________________________ ADD SPACIFIC   ________________________________-->
+      <!--_______________________________________________________________________________-->
+      
+        <div class="popup" id="addSpacificsPopup">
+          <input type="text" placeholder="Name" id="nameInput">
+          <input type="text" placeholder="Image URL" id="imageInput">
+          <input type="number" placeholder="Amount" id="amountInput">
+          <button id="setBtn" onclick=" We.addSpacificGoal()">Set</button>
+          <button id="cancelBtn" onclick="We.closePopup('addSpacificsPopup')">Cancel</button>
+        </div>
+      <!--_______________________________________________________________________________-->
+      <!--___________________________ UPDATE SPACIFIC GOAL ________________________________-->
+      <!--_______________________________________________________________________________-->
+        <div id="updateSpacificGoal" class="popup" >
+          <h2>Update</h2>
+          <input type="text" id="SpacificName" placeholder="Name">
+          <input type="text" id="SpacificUrl" placeholder="url-adress">
+          <input type="number" id="SpacificAmount" placeholder="Amount">
+          <button onclick="We.updateSpacificGoal()">Update</button>
+          <button onclick="We.deleteSpacificGoal()">Delete</button>
+          <button onclick="We.closePopup('updateSpacificGoal')">Cancel</button>
+        </div>
+      <!--_______________________________________________________________________________-->
+      <!--___________________________________   ADD GOAL   ________________________________-->
+      <!--_______________________________________________________________________________-->
+        <div class="popup" id="GoalPopup" >
+          <h2>Add goal</h2>
+            <input type="text"   class="goalImge"   id="goalImge" placeholder="Image URL">
+            <button class="addGoal"  id="addGoal" onclick="We.setGoalValues()">Add</button>
+            <button class="cancelGoalPopup" id="cancelGoalPopup" onclick="We.closePopup('GoalPopup')">Cancel</button>
+        </div>
+      <!--_______________________________________________________________________________-->
+      <!--___________________________________UPDATE CIRCLE________________________________-->
+      <!--_______________________________________________________________________________-->
+        <div class=" popup" id="UpdateCircle" >
+          <h2>Update goal</h2>
+            <input type="text"   class="UpdateGoalImge"   id="UpdateGoalImge" placeholder="Image URL">
+            <button class="addGoal"  id="UpdateGoal" onclick="We.updateGoalBackground()">Update Circle</button>
+            <button class="cancelUpdateGoalPopup" id="cancelUpdateGoalPopup" onclick="We.closePopup('UpdateCircle')">Cancel</button>
+        </div>
+      <!--_______________________________________________________________________________-->
+      <!--___________________________________ ADD INCOME  ________________________________-->
+      <!--_______________________________________________________________________________-->
+        <div class="popup" id="incomePopup" >
+          <div class="titleContainer">
+            <h2 id="incTitle">Add Income</h2>
+            <h2 id="incCurrSpan">-?</h2>
+          </div>
+      
+           <!-- Button Group (List and Currencies) -->
+        <div class="button-group">
+          <!-- List Button -->
+          <button class="list-button"  onclick="createOptionList('list-popup','incomeName')">List</button>
+      
+          <!-- Currency Buttons (EUR, USD, MDL, PLN) -->
+          <div class="currency-buttons">
+              <button class="currency-btn" id="eur-btn">EUR</button>
+              <button class="currency-btn" id="usd-btn">USD</button>
+              <button class="currency-btn" id="mdl-btn">MDL</button>
+              <button class="currency-btn" id="pln-btn">PLN</button>
+          </div>
+      </div>
+      
+      <!-- Input Fields -->
+      <input type="text" id="incomeName" placeholder="Name">
+      <input type="number" id="incomeAmount" placeholder="Amount" oninput="amountTitle('incomeAmount','incTitle');">
+      <input type="number" id="workedHours" placeholder="Hours" oninput="calculateHoursMoney()">
+      <input type="number" id="ratePerHour"  placeholder="Rate per Hour">
+      <input type="number" id="salaryId" placeholder="Salary" oninput="amountTitle('salaryId','incTitle');">
+      
+      <!-- Action Buttons (Add and Cancel) -->
+      <div class="action-buttons">
+          <button class="add-btn" id="add-btn" onclick="We.addSomething('incomeName','incomeAmount','income','incomePopup')">Add</button>
+          <button class="cancel-btn" id="cancel-btn" onclick="We.closePopup('incomePopup')">Cancel</button>
+      </div>
+      </div>
+      <!--_______________________________________________________________________________-->
+      <!--___________________________________ ADD EXPENCE _______________________________-->
+      <!--_______________________________________________________________________________-->
+      <div class="popup" id="expencePopup" >
+      <div class="titleContainer">
+        <h2 id="expTitle">Add Expence</h2>
+        <h2 id="expCurrSpan">-?</h2>
+      </div>
+      <!-- Button Group (List and Currencies) -->
+      <div class="button-group">
+          <!-- List Button -->
+          <button class="list-button" onclick="createOptionList('list-popup','expenceName')">List</button>
+      
+          <!-- Currency Buttons (EUR, USD, MDL, PLN) -->
+          <div class="currency-buttons">
+              <button class="currency-btn" id="eur-btn">EUR</button>
+              <button class="currency-btn" id="usd-btn">USD</button>
+              <button class="currency-btn" id="mdl-btn">MDL</button>
+              <button class="currency-btn" id="pln-btn">PLN</button>
+          </div>
+      </div>
+      
+      <!-- Input Fields -->
+      <input type="text" id="expenceName" placeholder="Name">
+      <input type="number" id="expenceAmount" placeholder="Amount" oninput="amountTitle('expenceAmount','expTitle');">
+      
+      <!-- Action Buttons (Add and Cancel) -->
+      <div class="action-buttons">
+          <button class="add-btn" id="add-btn" onclick="We.addSomething('expenceName','expenceAmount','outcome','expencePopup')">Add</button>
+          <button class="cancel-btn" id="cancel-btn" onclick="We.closePopup('expencePopup')">Cancel</button>
+      </div>
+      </div>
+      <!--_______________________________________________________________________________-->
+      <!--____________________ GOAL SPACIFIC CONTAINER   ________________________________-->
+      <!--_______________________________________________________________________________-->
+      <div class="goalSpacificContainer" id="goalSpacificContainer">
+        <button onclick="We.openPopup('addSpacificsPopup','flex')">Add spacifics</button>
+        <button onclick="We.openPopup('UpdateCircle', 'flex')">Update circle</button>
+        <button  onclick=" We.DeleteGoal()">Delete circle</button>
+        <button onclick="We.closePopup('goalSpacificContainer')">Cancel</button>
+        
+        <div class="goalElementContainer" id="goalElementContainer"></div>
+      
+      </div>
+      <!--____________________________________________________________________________------------------------------------___-->
+      <!--___________________________________   HEADER   _____________________________------------------------------------___-->
+      <!--____________________________________________________________________________------------------------------------___-->
+      <header class="header" id="header">
+        <div class="veryTop" id="veryTop" onclick="We.showGoalStatus()">
+          <button ondblclick="ClearLocalStorage()">Clear</button>
+          <button onclick="copyObject()">Copy</button>
+          <button class="ExpenseButton" id="ExpenseButton" onclick="open2('expencePopup','flex','expenceAmount','expTitle','expCurrSpan')">Expese</button>
+          <button class="IncomeButton" id="IncomeButton" onclick="open2('incomePopup','flex','incomeAmount','incTitle','incCurrSpan')">Income</button>
+          <button onclick="We.storeData()">Save</button>
+        </div>
+        <div id="circleContainer" class="circle-container"></div>
+          <button class="newGoalButton" id="newGoalButton" onclick="We.openPopup('GoalPopup','flex')">+</button>
+      </header>
+      
+      <!--_______________________________________________________________________________-->
+      <!--___________________________________   CHARTS   ________________________________-->
+      <!--_______________________________________________________________________________-->
+      <!--_______________________________________________________________________________-->
+      <!--_______________________________________________________________________________-->
+      <!--_______________________________________________________________________________-->
+      <!--_______________________________________________________________________________-->
+      <div class="linearContainer" id="linearContainer" ondblclick="We.closeChart('linearContainer')">
+        <p id="graphLast">145</p>
+        <p id="GraphLastOperation">+2</p>
+        <p id="graphLast2">234</p>
+        <p id="GraphLastOperation2">+4</p>
+        <canvas id="lineChart" width="100" height=" 50"></canvas>
+      </div>
+      <!--_______________________________________________________________________________-->
+      <!--___________________________________   CHARTS   ________________________________-->
+      <!--_______________________________________________________________________________-->
+      
+      <div class="expencePieContainer" id="expencePieContainer" ondblclick="We.closeChart('expencePieContainer')">
+            <canvas id="expensePieChart" ></canvas>
+      </div>
+       <!--_______________________________________________________________________________-->
+      <!--_________________________________  INFORMATION  ________________________________-->
+      <!--_______________________________________________________________________________-->
+      
+      <div id="MainInformationContainer">
+        <div id="infomationBoard">
+          
+          <div id="totalResults">
+            <div class="totals" id="actualMoney" onclick="We.highlightChosen('actualMoney','linearContainer', 'actualVSbalance')"></div>
+            <p class="totals" id="usdTotal" ></p>
+            <p class="totals" id="eurTotal" ></p>
+            <p class="totals" id="mdlTotal" ></p>
+            <p class="totals" id="plnTotal" ></p>
+          </div>
+        <div id="exchangeRates">
+          <div class="ExchangeWraper">
+            <div class="totals" id="usd-eur"></div>
+            <input class="bankInput" type="number" id="usdToEur" oninput="We.calculateBankTotal()" >
+        </div>
+      
+        <div class="ExchangeWraper">
+          <div class="totals" id="usd-mdl"></div>
+          <input class="bankInput" type="number" id="usdToMdl" oninput="We.calculateBankTotal()" >
+        </div>
+          
+         <div class="ExchangeWraper">
+          <div class="totals" id="usd-pln"></div>
+          <input class="bankInput" type="number" id="usdToPln" oninput="We.calculateBankTotal()">
+         </div>
+          
+        </div>
+        <div id="bankAccounts">
+          <div class="balance-contaier" id="usd-balance">
+            <div id="usd-bank-curency" onclick="We.highlightChosen('usd-balance','linearContainer', 'usdStatement')"></div>
+            <input class="bankInput" type="number" id="usd" placeholder="Enter USD balance" required
+            oninput="We.calculateBankTotal()">
+            <div class="mobias"></div>
+          </div>
+            <div class="balance-contaier" id="eur-balance">
+              <div id="eur-bank-curency" onclick="We.highlightChosen('eur-balance','linearContainer', 'eruStatement')"></div>
+              <input class="bankInput" type="number" id="eur" placeholder="Enter EUR balance" required
+              oninput="We.calculateBankTotal()"> 
+              <div class="mobias"></div>
+            </div>
+            <div class="balance-contaier" id="mdl-balance">
+              <div id="mdl-bank-curency" onclick="We.highlightChosen('mdl-balance','linearContainer', 'mdlStatement')"></div>
+              <input class="bankInput" type="number" id="mdl" placeholder="Enter MDL balance" required
+              oninput="We.calculateBankTotal()">
+              <div class="Victoria"></div>
+            </div>
+            <div class="balance-contaier" id="pln-balance">
+              <div id="pln-bank-curency" onclick="We.highlightChosen('pln-balance','linearContainer', 'plnStatement')"></div>
+              <input class="bankInput" type="number" id="pln" placeholder="Enter PLN balance" required
+              oninput="We.calculateBankTotal()">
+              <div class="pko"></div>
+            </div>
+        </div>
+        <div id="graphButtons">
+          <button id="freedome2" onclick="We.highlightChosen('freedome2','linearContainer', 'freedome')">Freedom</button>
+          <button id="freedome3" onclick="We.highlightChosen('freedome3','linearContainer', 'perioudFreedome')">Perioud Freedom</button>
+          <button id="averr2" onclick="We.highlightChosen('averr2','linearContainer', 'average')">Total Average</button>
+          <button id="averr3" onclick="We.highlightChosen('averr3','linearContainer', 'perioudAverage')">Perioud Average</button>
+          <button id="expence2" onclick="We.highlightChosen('expence2','expencePieContainer', 'expences')">Expences</button>
+          <button id="income2" onclick="We.highlightChosen('income2','expencePieContainer', 'income')">Income</button>
+          <button id="hourrr2" onclick="We.highlightChosen('hourrr2','linearContainer', 'hours')">Work Hours</button>
+          <button id="expence/income2" onclick="We.highlightChosen('expence/income2','linearContainer', 'expence/income')">Expences/Income</button>
+      
+        </div>
+        <div id="dayList">
+         
+        </div>
+      
+        </div>
+      <!-- Input for the number of days -->
+      <div class="container" id="calendar"></div>
+      </div>
+
+      <script>
+        
+        
+      </script>
+    
+</body>
+</html>
